@@ -31,7 +31,7 @@ while True:
             yes_no = input(sim_nao)
 
             if yes_no == "y":
-                deposito = int(input("Valor do deposito:  "))
+                deposito = float(input("Valor do deposito:  "))
                 saldo += deposito
                 extrato.append(f"Depósito: {deposito}")
             else:
@@ -40,15 +40,17 @@ while True:
     elif opcao == "s":
         if numero_saques < LIMITE_SAQUES:
             while True:
-                print( " \n Deseja Sacar?")
+                print( "\nDeseja Sacar?")
                 yes_no = input(sim_nao)
                 saque = 0
             
                 if numero_saques < LIMITE_SAQUES:
                     if yes_no == "y":
-                        saque = int(input("Valor do saque:  "))
+                        saque = float(input("Valor do saque:  "))
                         if saque > saldo:
-                            print("Saldo Insuficiente")
+                            print("\nSaldo Insuficiente")
+                        elif saque > 500:
+                            print("\nLimite Insuficiente")
                         else:
                             saldo -= saque
                             numero_saques += 1
@@ -67,11 +69,11 @@ while True:
             continue
 
     elif opcao == "e":
-        print("Extrato")
+        print("\nExtrato")
         for movimentacao in extrato:
             print(movimentacao)
 
-        print("Saldo Final")
+        print("\nSaldo Final")
         print(saldo)
 
     elif opcao == "q":
