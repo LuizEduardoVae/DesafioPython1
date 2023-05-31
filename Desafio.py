@@ -37,8 +37,33 @@ while True:
                 break
 
     elif opcao == "s":
-         while True:
+        if numero_saques < LIMITE_SAQUES:
+            while True:
+                print( " \n Deseja Sacar?")
+                yes_no = input(sim_nao)
+                saque = 0
             
+                if numero_saques < LIMITE_SAQUES:
+                    if yes_no == "y":
+                        saque = int(input("Valor do saque:  "))
+                        if saque > saldo:
+                            print("Saldo Insuficiente")
+                        else:
+                            saldo -= saque
+                            numero_saques += 1
+                    else:
+                        break
+                else:
+                    print(""" \nQuantidade de saques diarios atingidos 
+                              \nSelecione outra opcao!
+                        """)
+                    break
+        else:
+            print(""" \nQuantidade de saques diarios atingidos 
+                      \nSelecione outra opcao!
+                 """)
+            continue
+
     elif opcao == "e":
         print(saldo)
 
