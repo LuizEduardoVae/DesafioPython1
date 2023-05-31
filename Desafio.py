@@ -17,7 +17,7 @@ sim_nao = """
 
 saldo = 0
 limite = 500
-extrato = ""
+extrato = []
 numero_saques = 0
 LIMITE_SAQUES = 3
 
@@ -33,6 +33,7 @@ while True:
             if yes_no == "y":
                 deposito = int(input("Valor do deposito:  "))
                 saldo += deposito
+                extrato.append(f"Depósito: {deposito}")
             else:
                 break
 
@@ -51,6 +52,7 @@ while True:
                         else:
                             saldo -= saque
                             numero_saques += 1
+                            extrato.append(f"Saque: {saque}")
                     else:
                         break
                 else:
@@ -65,6 +67,11 @@ while True:
             continue
 
     elif opcao == "e":
+        print("Extrato")
+        for movimentacao in extrato:
+            print(movimentacao)
+
+        print("Saldo Final")
         print(saldo)
 
     elif opcao == "q":
