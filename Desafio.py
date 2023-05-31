@@ -7,6 +7,14 @@ menu = """
 
 => """
 
+sim_nao = """
+
+[y] Sim
+[n] Nao
+
+=> """
+
+
 saldo = 0
 limite = 500
 extrato = ""
@@ -16,15 +24,23 @@ LIMITE_SAQUES = 3
 while True:
 
     opcao = input(menu)
-
+    
     if opcao == "d":
-        print("Deposito")
+        while True:
+            print( " \n Deseja depositar?")
+            yes_no = input(sim_nao)
+
+            if yes_no == "y":
+                deposito = int(input("Valor do deposito:  "))
+                saldo += deposito
+            else:
+                break
 
     elif opcao == "s":
-        print("Deposito")
-        
+         while True:
+            
     elif opcao == "e":
-        print("Deposito")
+        print(saldo)
 
     elif opcao == "q":
         break
