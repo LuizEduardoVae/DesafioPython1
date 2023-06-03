@@ -20,7 +20,7 @@ extrato = []
 numero_saques = 0
 LIMITE_SAQUES = 3
 
-def saques(*, saque, numero_saques, saldo, extrato):
+def sacar(*, saque, numero_saques, saldo, extrato):
     
     if saque > saldo:
         print("\nSaldo Insuficiente")
@@ -34,8 +34,25 @@ def saques(*, saque, numero_saques, saldo, extrato):
         saldo -= saque
         numero_saques += 1
         extrato.append(f"Saque: {saque}")
+
     return saldo, numero_saques
+
+def despositar(deposito,saldo,extrato,/):
+
+    saldo += deposito
+    extrato.append(f"Depósito: {deposito}")
+
+    return saldo
+
         
+def extrato_bancario(saldo,/,*,extrato):
+    for movimentacao in extrato:
+            print(movimentacao)
+
+    print("\nSaldo Final:")
+    print(saldo)
+
+
 
 while True:
 
@@ -48,8 +65,8 @@ while True:
 
             if yes_no == "y":
                 deposito = float(input("Valor do deposito:  "))
-                saldo += deposito
-                extrato.append(f"Depósito: {deposito}")
+                saldo = despositar(deposito,saldo,extrato)
+                
             else:
                 break
 
@@ -62,18 +79,22 @@ while True:
                 
                 if yes_no == "y":
                     saque = float(input("Valor do saque:  "))
-                    saldo, numero_saques = saques(saque=saque, numero_saques=numero_saques, saldo=saldo,extrato=extrato)
+                    saldo, numero_saques= sacar(saque=saque, numero_saques=numero_saques, saldo=saldo,extrato=extrato)
                 else:
                     break
 
 
     elif opcao == "e":
-        print("\nExtrato")
-        for movimentacao in extrato:
-            print(movimentacao)
-
-        print("\nSaldo Final")
-        print(saldo)
+         while True:
+                print( "\n======== Deseja ver o Extrato? ========")
+                yes_no = input(sim_nao)
+                
+                if yes_no == "y":
+                    print("\n======== Extrato ========")
+                    extrato_bancario(saldo, extrato=extrato)
+                else:
+                    break
+     
 
     elif opcao == "q":
         break
