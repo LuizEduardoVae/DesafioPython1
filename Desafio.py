@@ -1,8 +1,14 @@
 
 # # # # # # # # # # # # # # Menus do Sistema  # # # # # # # # # # # # # #
-
-
 menu_conta = """
+
+[1] Criar conta
+[2] Acessar conta
+[3] Sair
+
+=> """
+
+menu_conta_acoes = """
 
 [1] Depositar
 [2] Sacar
@@ -29,8 +35,9 @@ sim_nao_usuario = """
 menu_usuario = """
 
 [1] Criar Usuario
-[2] Acessar sua conta
+[2] Acessar seu Usuario
 [3] Sair
+
 [s] Adm
 
 => """
@@ -54,6 +61,10 @@ usuarios = {}
 nome = ''
 data_nascimento = ''
 cpf = ''
+
+contas = {}
+numero_conta = 0
+agencia = "0001/"
 
 senha_adm = "Senha123"
 
@@ -140,11 +151,50 @@ def selecionar_usuario():
       
 # # # # # # # # # # # # # # Funcoes de Conta  # # # # # # # # # # # # # #
 
-def criar_conta():
-    print("Ola")
+def criar_conta(cpf, contas, extrato):
+    global agencia
+
+    numero_conta = str(len(contas) + 1)
+
+    conta_dados = {
+        "Conta": numero_conta,
+        "Saldo": saldo,
+        "Extrato": extrato
+    }
+
+    contas[numero_conta] = conta_dados
+
+    return contas
+
+    
+
+
      
-def selecionar_conta():
-    print("Ola")
+def selecionar_conta(contas):
+    print("Selecione uma conta:")
+    
+    for numero_conta, dados_conta in contas.items():
+        print(f"Conta: {numero_conta}")
+        print(f"Saldo: R$ {dados_conta['Saldo']}")
+        print("----")
+
+    numero_conta_selecionada = input("Digite o número da conta desejada: ")
+    
+
+    for numero_conta in contas.values():
+        if numero_conta["Conta"] == numero_conta_selecionada:
+            print("\nLogado com sucesso")
+            return numero_conta
+    
+    print("\nConta não encontrada.")
+    return None     
+
+
+    # if conta_selecionada:
+    #     return conta_selecionada
+    # else:
+    #     print("Conta não encontrada.")
+    #     return None
 
 # # # # # # # # # # # # # # Funcoes dentro Conta  # # # # # # # # # # # # # #
 
@@ -211,7 +261,7 @@ while True:
     
     elif opcao1 == "2":
          while True:
-                print( "\nDeseja acessar sua conta?")
+                print( "\nDeseja acessar seu usuario?")
                 s_i = input(sim_nao_usuario)
 
                 if s_i == "1":
@@ -221,6 +271,52 @@ while True:
                         if usuario_selecionado:
                             usuario_selecionado_nome = usuario_selecionado["Nome"]
                             print(f"\nBem-vindo(a), {usuario_selecionado_nome}!")
+
+                            while True:
+                                opcao2 = input(menu_conta)
+
+                                if opcao2 == "1":
+                                    print( "\n\nDeseja cria uma conta?")
+                                    y_n = input(sim_nao_conta)
+
+                                    if y_n == "1":
+
+                                        contas = criar_conta(usuario_selecionado["CPF"], contas, extrato)
+
+
+                                    else:
+                                        print("\nvoltando ao menu de opcoes da conta...")
+
+
+                                if opcao2 == "2":
+                                    conta_escolhida = selecionar_conta(contas)
+
+                                    if conta_escolhida:
+                                        while True:
+
+                                            opcao3 = input(menu_conta_acoes)
+
+                                            if opcao3 == "1":
+                                                print("Ola")
+                                                
+                                            if opcao3 == "2":
+                                                print("Ola")
+                                            if opcao3 == "3":
+                                                print("Ola")
+                                            if opcao3 == "4":
+                                                print("Ola")
+                                                break
+                                            else:
+                                                print("Opcao Invalida")
+
+
+                                if opcao2 == "3":
+                                    break
+
+                                else:
+                                    ("Opcao invalida")
+                                        
+
                         else:
                             print("Usuario nao encontrado")
                 
