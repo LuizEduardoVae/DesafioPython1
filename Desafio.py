@@ -108,13 +108,13 @@ def criar_usuario(nome, data_nascimento, cpf):
 
         if endereco is not None:
                 dados_usuario = {
-                    "Nome": nome,
-                    "Data de Nascimento": data_nascimento,
                     "CPF": cpf,
+                    "Data de Nascimento": data_nascimento,
+                    "Nome": nome,
                     "Endereco": endereco
                 }
 
-                usuarios[nome] = dados_usuario
+                usuarios[cpf] = dados_usuario
                 return usuarios
             
         else:
@@ -125,16 +125,16 @@ def criar_usuario(nome, data_nascimento, cpf):
         return None
 
 def selecionar_usuario():
-    nome_usuario= input("Nome do seu usuario: ")
+    login_usuario = input("CPF do seu usuário: ")
 
     for usuario in usuarios.values():
-        if usuario["Nome"] == nome_usuario:
+        if usuario["CPF"] == login_usuario:
             print("\nLogado com sucesso")
-            return usuarios[nome_usuario]
-           
-
+            return usuario
+    
     print("Usuário não encontrado.")
     return None
+
   
        
       
