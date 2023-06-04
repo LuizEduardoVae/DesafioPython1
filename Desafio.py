@@ -14,11 +14,79 @@ sim_nao = """
 
 => """
 
+menu_principal = """
+
+[c] Criar Conta
+[v] Ver contas
+[q] Sair
+
+=> """
+
+
+# Variaveis Globais
+
 saldo = 0
 limite = 500
 extrato = []
 numero_saques = 0
 LIMITE_SAQUES = 3
+
+rua = ''
+numero_casa = ''
+bairro_casa = ''
+cidade_casa = ''
+
+usuarios = {}
+
+nome = ''
+data_nascimento = ''
+cpf = ''
+
+
+# 
+
+
+def cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa):
+    rua = str(input("Rua: "))
+    numero_casa = str(input("Numero: "))
+    bairro_casa = str(input("Bairro: "))
+    cidade_casa = str(input("Cidade: "))
+
+    endereco = {
+        "logradouro": rua,
+        "numero": numero_casa,
+        "bairro": bairro_casa,
+        "cidade": cidade_casa
+    }
+    
+    return endereco
+
+def string_so_numeros(cpf):
+    for char in cpf:
+        if not char.isdigit():
+            return False, cpf
+    return True, cpf
+
+def criar_usuario(nome,data_nascimeneto,cpf):
+    nome = str(input("Nome: "))
+    data_nascimento = str(input("Data de Nascimento: "))
+    cpf = str(input("CPF: "))
+
+    endereco = cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa)
+    cpf_validado = string_so_numeros(cpf)
+
+    if cpf_validado[0]:
+        print("CPF validado")
+        cpf = cpf_validado[1]
+
+    else:
+        print("CPF inválido")
+        print("Crie uma conta Novamente")
+
+
+criar_usuario()
+
+
 
 def sacar(*, saque, numero_saques, saldo, extrato):
     
@@ -54,50 +122,68 @@ def extrato_bancario(saldo,/,*,extrato):
 
 
 
+
+
+
 while True:
 
-    opcao = input(menu)
-    
-    if opcao == "d":
-        while True:
-            print( " \nDeseja depositar?")
-            yes_no = input(sim_nao)
+    opcao1 = input(menu_principal)
 
-            if yes_no == "y":
-                deposito = float(input("Valor do deposito:  "))
-                saldo = despositar(deposito,saldo,extrato)
-                
-            else:
-                break
-
-    elif opcao == "s":
-            
-            while True:
-                print( "\nDeseja Sacar?")
-                yes_no = input(sim_nao)
-                saque = 0
-                
-                if yes_no == "y":
-                    saque = float(input("Valor do saque:  "))
-                    saldo, numero_saques= sacar(saque=saque, numero_saques=numero_saques, saldo=saldo,extrato=extrato)
-                else:
-                    break
-
-
-    elif opcao == "e":
+    if opcao1 == "c":
          while True:
-                print( "\n======== Deseja ver o Extrato? ========")
+                print( " \nDeseja criar uma conta?")
                 yes_no = input(sim_nao)
-                
+
                 if yes_no == "y":
-                    print("\n======== Extrato ========")
-                    extrato_bancario(saldo, extrato=extrato)
+                    criar_usuario
+                    
                 else:
                     break
-     
 
-    elif opcao == "q":
-        break
+    while True:
 
-    else:
-        print("Operação inválida, por favor selecione novamente a operação desejada.")
+        opcao = input(menu)
+        
+        if opcao == "d":
+            while True:
+                print( " \nDeseja depositar?")
+                yes_no = input(sim_nao)
+
+                if yes_no == "y":
+                    deposito = float(input("Valor do deposito:  "))
+                    saldo = despositar(deposito,saldo,extrato)
+                    
+                else:
+                    break
+
+        elif opcao == "s":
+                
+                while True:
+                    print( "\nDeseja Sacar?")
+                    yes_no = input(sim_nao)
+                    saque = 0
+                    
+                    if yes_no == "y":
+                        saque = float(input("Valor do saque:  "))
+                        saldo, numero_saques = sacar(saque=saque, numero_saques=numero_saques, saldo=saldo,extrato=extrato)
+                    else:
+                        break
+
+
+        elif opcao == "e":
+            while True:
+                    print( "\n======== Deseja ver o Extrato? ========")
+                    yes_no = input(sim_nao)
+                    
+                    if yes_no == "y":
+                        print("\n======== Extrato ========")
+                        extrato_bancario(saldo, extrato=extrato)
+                    else:
+                        break
+        
+
+        elif opcao == "q":
+            break
+
+        else:
+            print("Operação inválida, por favor selecione novamente a operação desejada.")
