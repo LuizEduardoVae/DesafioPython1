@@ -15,7 +15,6 @@ sim_nao_conta = """
 => """
 
 
-
 sim_nao_usuario = """
 
 [1] Sim
@@ -52,10 +51,10 @@ data_nascimento = ''
 cpf = ''
 
 
-# 
 
 
- # # # # # # # # # # # # # # Funcoes de Usuario  # # # # # # # # # # # # # #
+
+# # # # # # # # # # # # # # Funcoes de Usuario  # # # # # # # # # # # # # #
 
 def cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa):
     rua = str(input("Rua: "))
@@ -124,9 +123,32 @@ def criar_usuario(nome, data_nascimento, cpf):
         print("CPF inválido")
         return None
 
+def selecionar_usuario():
+    nome_usuario= input("Nome do seu usuario: ")
 
+    for usuario in usuarios.values():
+        if usuario["Nome"] == nome_usuario:
+            print("\nLogado com sucesso")
+            return usuarios[nome_usuario]
+           
 
- # # # # # # # # # # # # # # Funcoes de Conta  # # # # # # # # # # # # # #
+    print("Usuário não encontrado.")
+    return None
+    # for index,nome_usuario in enumerate(usuarios.keys(), start=1):
+    #     print(f"{index}. {nome_usuario}")
+       
+      
+    
+
+# # # # # # # # # # # # # # Funcoes de Conta  # # # # # # # # # # # # # #
+
+def criar_conta():
+    print("Ola")
+     
+def selecionar_conta():
+    print("Ola")
+
+# # # # # # # # # # # # # # Funcoes dentro Conta  # # # # # # # # # # # # # #
 
 def sacar(*, saque, numero_saques, saldo, extrato):
     
@@ -175,7 +197,7 @@ while True:
                 s_i = input(sim_nao_usuario)
 
                 if s_i == "1":
-                    criar_usuario(nome,data_nascimento,cpf)
+                    usuarios = criar_usuario(nome,data_nascimento,cpf)
                     
                 else:
                     break
@@ -187,9 +209,14 @@ while True:
 
                 if s_i == "1":
                     if usuarios:
-                        print("Usuários cadastrados:")
-                        for nome_usuario in usuarios.keys():
-                            print(nome_usuario)
+                        usuario_selecionado = selecionar_usuario()
+
+                        if usuario_selecionado:
+                            usuario_selecionado_nome = usuario_selecionado["Nome"]
+                            print(f"\nBem-vindo(a), {usuario_selecionado_nome}!")
+                        else:
+                            print("Usuario nao encontrado")
+                
                     else:
                         print("\nSem usuarios")
                 else:
