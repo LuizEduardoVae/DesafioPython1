@@ -112,3 +112,74 @@ print(usuarios)
 
 
 
+usuarios = {}
+
+def cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa):
+    rua = str(input("Rua: "))
+    numero_casa = str(input("Numero: "))
+    bairro_casa = str(input("Bairro: "))
+    cidade_casa = str(input("Cidade: "))
+
+    numero_casa_validado = validar_numero_casa(numero_casa)
+
+    if numero_casa_validado:
+        print("Endereço validado")
+        endereco = {
+            "logradouro": rua,
+            "numero": numero_casa,
+            "bairro": bairro_casa,
+            "cidade": cidade_casa
+        }
+        return endereco
+    else:
+        print("Número de casa inválido")
+        return None
+
+def validar_cpf(cpf):
+    if not cpf.isdigit():
+        return False
+    return True
+
+def validar_numero_casa(numero_casa):
+    if not numero_casa.isdigit():
+        return False
+    return True
+
+def criar_usuario(nome, data_nascimento, cpf):
+    nome = str(input("Nome: "))
+    data_nascimento = str(input("Data de Nascimento: "))
+    cpf = str(input("CPF: "))
+
+    cpf_valido = validar_cpf(cpf)
+    
+    if cpf_valido:
+        print("CPF validado")
+        endereco = cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa)
+
+        if endereco is not None:
+            dados_usuario = {
+                "Nome": nome,
+                "Data de Nascimento": data_nascimento,
+                "CPF": cpf,
+                "Endereco": endereco
+            }
+
+            usuarios[nome] = dados_usuario
+            return usuarios
+        else:
+            print("Não foi possível cadastrar o endereço.")
+            return None
+    else:
+        print("CPF inválido")
+        return None
+
+nome = ''
+data_nascimento = ''
+cpf = ''
+
+usuarios = criar_usuario(nome, data_nascimento, cpf)
+
+if usuarios is not None:
+    print(usuarios)
+else:
+    print("Não foi possível criar o usuário.")

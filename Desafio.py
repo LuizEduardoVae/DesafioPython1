@@ -1,24 +1,33 @@
-menu = """
+menu_conta = """
 
-[d] Depositar
-[s] Sacar
-[e] Extrato
-[q] Sair
-
-=> """
-
-sim_nao = """
-
-[y] Sim
-[n] Nao
+[1] Depositar
+[2] Sacar
+[3] Extrato
+[4] Sair
 
 => """
 
-menu_principal = """
+sim_nao_conta = """
 
-[c] Criar Conta
-[v] Ver contas
-[q] Sair
+[1] Sim
+[2] Nao
+
+=> """
+
+
+
+sim_nao_usuario = """
+
+[1] Sim
+[2] Nao
+
+=> """
+
+menu_usuario = """
+
+[1] Criar Usuario
+[2] Acessar sua conta
+[3] Sair
 
 => """
 
@@ -46,47 +55,78 @@ cpf = ''
 # 
 
 
+ # # # # # # # # # # # # # # Funcoes de Usuario  # # # # # # # # # # # # # #
+
 def cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa):
     rua = str(input("Rua: "))
     numero_casa = str(input("Numero: "))
     bairro_casa = str(input("Bairro: "))
     cidade_casa = str(input("Cidade: "))
 
-    endereco = {
-        "logradouro": rua,
-        "numero": numero_casa,
-        "bairro": bairro_casa,
-        "cidade": cidade_casa
-    }
-    
-    return endereco
+    numero_casa_validado = validar_numero_casa(numero_casa)
 
-def string_so_numeros(cpf):
-    for char in cpf:
-        if not char.isdigit():
-            return False, cpf
-    return True, cpf
+    if numero_casa_validado:
+        print("Endereço validado")
+        endereco = {
+            "logradouro": rua,
+            "numero": numero_casa,
+            "bairro": bairro_casa,
+            "cidade": cidade_casa
+        }
+        return endereco
+    else:
+        print("Número de casa inválido")
+        return None
 
-def criar_usuario(nome,data_nascimeneto,cpf):
+def validar_cpf(cpf):
+    if not cpf.isdigit():
+        return False
+    return True
+
+def validar_numero_casa(numero_casa):
+    if not numero_casa.isdigit():
+        return False
+    return True
+
+def criar_usuario(nome, data_nascimento, cpf):
     nome = str(input("Nome: "))
     data_nascimento = str(input("Data de Nascimento: "))
     cpf = str(input("CPF: "))
 
-    endereco = cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa)
-    cpf_validado = string_so_numeros(cpf)
+    cpf_valido = validar_cpf(cpf)
+    
+    if cpf_valido:
 
-    if cpf_validado[0]:
+        for usario in usuarios.values():
+            if usario["CPF"] == cpf:
+                print("CPF já cadastrado.")
+                return None
+
+           
         print("CPF validado")
-        cpf = cpf_validado[1]
+        endereco = cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa)
 
+        if endereco is not None:
+                dados_usuario = {
+                    "Nome": nome,
+                    "Data de Nascimento": data_nascimento,
+                    "CPF": cpf,
+                    "Endereco": endereco
+                }
+
+                usuarios[nome] = dados_usuario
+                return usuarios
+            
+        else:
+                print("Não foi possível cadastrar o endereço.")
+                return None
     else:
         print("CPF inválido")
-        print("Crie uma conta Novamente")
+        return None
 
 
-criar_usuario()
 
-
+ # # # # # # # # # # # # # # Funcoes de Conta  # # # # # # # # # # # # # #
 
 def sacar(*, saque, numero_saques, saldo, extrato):
     
@@ -127,63 +167,41 @@ def extrato_bancario(saldo,/,*,extrato):
 
 while True:
 
-    opcao1 = input(menu_principal)
+    opcao1 = input(menu_usuario)
 
-    if opcao1 == "c":
+    if opcao1 == "1":
          while True:
-                print( " \nDeseja criar uma conta?")
-                yes_no = input(sim_nao)
+                print( " \nDeseja criar um usuario?")
+                s_i = input(sim_nao_usuario)
 
-                if yes_no == "y":
-                    criar_usuario
+                if s_i == "1":
+                    criar_usuario(nome,data_nascimento,cpf)
                     
                 else:
                     break
+    
+    elif opcao1 == "2":
+         while True:
+                print( "\nDeseja acessar sua conta?")
+                s_i = input(sim_nao_usuario)
 
-    while True:
-
-        opcao = input(menu)
-        
-        if opcao == "d":
-            while True:
-                print( " \nDeseja depositar?")
-                yes_no = input(sim_nao)
-
-                if yes_no == "y":
-                    deposito = float(input("Valor do deposito:  "))
-                    saldo = despositar(deposito,saldo,extrato)
-                    
+                if s_i == "1":
+                    if usuarios:
+                        print("Usuários cadastrados:")
+                        for nome_usuario in usuarios.keys():
+                            print(nome_usuario)
+                    else:
+                        print("\nSem usuarios")
                 else:
                     break
 
-        elif opcao == "s":
-                
-                while True:
-                    print( "\nDeseja Sacar?")
-                    yes_no = input(sim_nao)
-                    saque = 0
-                    
-                    if yes_no == "y":
-                        saque = float(input("Valor do saque:  "))
-                        saldo, numero_saques = sacar(saque=saque, numero_saques=numero_saques, saldo=saldo,extrato=extrato)
-                    else:
-                        break
+    
+    elif opcao1 == "3":
+        print("Saindo...")
+        break
 
+    else:
+        print("\n\nOpcao Invalida")
+        print("Selecione uma das opções abaixo:")
 
-        elif opcao == "e":
-            while True:
-                    print( "\n======== Deseja ver o Extrato? ========")
-                    yes_no = input(sim_nao)
-                    
-                    if yes_no == "y":
-                        print("\n======== Extrato ========")
-                        extrato_bancario(saldo, extrato=extrato)
-                    else:
-                        break
-        
-
-        elif opcao == "q":
-            break
-
-        else:
-            print("Operação inválida, por favor selecione novamente a operação desejada.")
+    
