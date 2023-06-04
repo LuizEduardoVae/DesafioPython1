@@ -27,6 +27,7 @@ menu_usuario = """
 [1] Criar Usuario
 [2] Acessar sua conta
 [3] Sair
+[s] Adm
 
 => """
 
@@ -134,8 +135,7 @@ def selecionar_usuario():
 
     print("Usuário não encontrado.")
     return None
-    # for index,nome_usuario in enumerate(usuarios.keys(), start=1):
-    #     print(f"{index}. {nome_usuario}")
+  
        
       
     
@@ -226,7 +226,10 @@ while True:
     elif opcao1 == "3":
         print("Saindo...")
         break
-
+    elif opcao1 == "s":
+        for index,nome_usuario in enumerate(usuarios.keys(), start=1):
+            print(f"{index}. {nome_usuario}")
+        
     else:
         print("\n\nOpcao Invalida")
         print("Selecione uma das opções abaixo:")
