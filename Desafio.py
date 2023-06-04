@@ -1,3 +1,7 @@
+
+# # # # # # # # # # # # # # Menus do Sistema  # # # # # # # # # # # # # #
+
+
 menu_conta = """
 
 [1] Depositar
@@ -32,7 +36,7 @@ menu_usuario = """
 => """
 
 
-# Variaveis Globais
+# # # # # # # # # # # # # #  Variaveis Globais  # # # # # # # # # # # # # #
 
 saldo = 0
 limite = 500
@@ -51,8 +55,7 @@ nome = ''
 data_nascimento = ''
 cpf = ''
 
-
-
+senha_adm = "Senha123"
 
 
 # # # # # # # # # # # # # # Funcoes de Usuario  # # # # # # # # # # # # # #
@@ -66,7 +69,7 @@ def cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa):
     numero_casa_validado = validar_numero_casa(numero_casa)
 
     if numero_casa_validado:
-        print("Endereço validado")
+        print("\nEndereço validado")
         endereco = {
             "logradouro": rua,
             "numero": numero_casa,
@@ -75,7 +78,7 @@ def cadastrar_endereco(rua, numero_casa, bairro_casa, cidade_casa):
         }
         return endereco
     else:
-        print("Número de casa inválido")
+        print("\nNúmero de casa inválido")
         return None
 
 def validar_cpf(cpf):
@@ -99,7 +102,7 @@ def criar_usuario(nome, data_nascimento, cpf):
 
         for usario in usuarios.values():
             if usario["CPF"] == cpf:
-                print("CPF já cadastrado.")
+                print("\nCPF já cadastrado.")
                 return None
 
            
@@ -118,7 +121,7 @@ def criar_usuario(nome, data_nascimento, cpf):
                 return usuarios
             
         else:
-                print("Não foi possível cadastrar o endereço.")
+                print("\nNão foi possível cadastrar o endereço.")
                 return None
     else:
         print("CPF inválido")
@@ -132,14 +135,9 @@ def selecionar_usuario():
             print("\nLogado com sucesso")
             return usuario
     
-    print("Usuário não encontrado.")
-    return None
-
-  
-       
+    print("\nUsuário não encontrado.")
+    return None     
       
-    
-
 # # # # # # # # # # # # # # Funcoes de Conta  # # # # # # # # # # # # # #
 
 def criar_conta():
@@ -182,10 +180,19 @@ def extrato_bancario(saldo,/,*,extrato):
     print("\nSaldo Final:")
     print(saldo)
 
+# # # # # # # # # # # # # # Funcoes da Adm  # # # # # # # # # # # # # #
 
+def digitar_senha_adm():
+    senha = input("Digite a senha: ")
 
+    if senha == senha_adm:
+        print("\nLogado com sucesso")
+        return senha
+    
+    print("\nLogin Invalido.")
+    return None   
 
-
+# # # # # # # # # # # # # # Main  # # # # # # # # # # # # # #
 
 while True:
 
@@ -227,8 +234,16 @@ while True:
         print("Saindo...")
         break
     elif opcao1 == "s":
-        for index,nome_usuario in enumerate(usuarios.keys(), start=1):
-            print(f"{index}. {nome_usuario}")
+
+        loginAprovado = digitar_senha_adm()
+
+        if loginAprovado:
+            for index,nome_usuario in enumerate(usuarios.keys(), start=1):
+                print(f"{index}. {nome_usuario}")
+        else:
+            print("\nNao foi possivel completar o login!")
+            print("Tente novamente em breve!")
+            
         
     else:
         print("\n\nOpcao Invalida")
