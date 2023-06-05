@@ -181,10 +181,6 @@ def main():
     
 
     saldo = 0
-    limite = 500
-    extrato = []
-    numero_saques = 0
-    LIMITE_SAQUES = 3
 
     contas = {}
     numero_conta = 0
@@ -192,7 +188,6 @@ def main():
 
     usuarios = {}
 
-    senha_adm = "Senha123"
 
     while True:
         print("\n# # # # # # # # # # # # # # Menus do Sistema  # # # # # # # # # # # # # #")
