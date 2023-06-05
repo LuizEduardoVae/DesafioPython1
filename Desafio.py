@@ -298,7 +298,6 @@ while True:
 
                                             if opcao3 == "1":
                                                 print("Ola")
-                                                
                                             if opcao3 == "2":
                                                 print("Ola")
                                             if opcao3 == "3":

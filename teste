@@ -1,0 +1,204 @@
+# # # # # # # # # # # # # # Menus do Sistema  # # # # # # # # # # # # # #
+menu_conta = """
+[1] Criar conta
+[2] Acessar conta
+[3] Sair
+
+=> """
+
+menu_conta_acoes = """
+[1] Depositar
+[2] Sacar
+[3] Extrato
+[4] Sair
+
+=> """
+
+sim_nao = """
+[1] Sim
+[2] Não
+
+=> """
+
+menu_usuario = """
+[1] Criar usuário
+[2] Acessar usuário
+[3] Sair
+
+=> """
+
+usuarios = {}
+numero_conta = 0
+agencia = "0001/"
+
+# Funções de Conta
+
+def criar_conta(usuario):
+    global numero_conta
+    numero_conta += 1
+
+    conta = {
+        "Conta": numero_conta,
+        "Saldo": 0,
+        "Extrato": [],
+        "Numero Saques": 0,
+        "Limite": 500
+    }
+
+    usuario["Contas"].append(conta)
+
+    print(f"\nConta criada com sucesso. Número da conta: {agencia}{numero_conta}")
+
+def selecionar_conta(usuario):
+    print("Selecione uma conta:")
+    contas = usuario["Contas"]
+
+    if contas:
+        for conta in contas:
+            print(f"Conta: {agencia}{conta['Conta']}")
+            print(f"Saldo: R$ {conta['Saldo']}")
+            print("----")
+
+        numero_conta_selecionada = int(input("Digite o número da conta desejada: "))
+
+        for conta in contas:
+            if conta['Conta'] == numero_conta_selecionada:
+                return conta
+
+        print("\nConta não encontrada.")
+    else:
+        print("Usuário não possui contas.")
+
+    return None
+
+# Funções de Ação na Conta
+
+def depositar(conta):
+    deposito = float(input("Quantidade de depósito: "))
+    conta["Saldo"] += deposito
+    conta["Extrato"].append(f"Depósito: {deposito}")
+    print("\nDepósito realizado com sucesso.")
+
+def sacar(conta):
+    saque = float(input("Quantidade de saque: "))
+
+    if saque > conta["Saldo"]:
+        print("\nSaldo insuficiente.")
+    elif conta["Numero Saques"] >= 3:
+        print("\nQuantidade de saques diários atingidos.")
+    else:
+        conta["Saldo"] -= saque
+        conta["Numero Saques"] += 1
+        conta["Extrato"].append(f"Saque: {saque}")
+        print("\nSaque realizado com sucesso.")
+
+def extrato_bancario(conta):
+    print("\nExtrato bancário:")
+    for movimentacao in conta["Extrato"]:
+        print(movimentacao)
+
+    print("\nSaldo Final:")
+    print(f"R$ {conta['Saldo']}")
+
+# Funções de Usuário
+
+def criar_usuario():
+    nome = input("Digite o nome do usuário: ")
+    cpf = input("Digite o CPF do usuário: ")
+
+    if cpf in usuarios:
+        print("\nCPF já cadastrado.")
+        return None
+
+    usuario = {
+        "Nome": nome,
+        "CPF": cpf,
+        "Contas": []
+    }
+
+    usuarios[cpf] = usuario
+    print("\nUsuário criado com sucesso.")
+
+    return usuario
+
+def selecionar_usuario():
+    print("Selecione um usuário:")
+    cpfs = usuarios.keys()
+
+    if cpfs:
+        for cpf in cpfs:
+            print(f"CPF: {cpf}")
+            print(f"Nome: {usuarios[cpf]['Nome']}")
+            print("----")
+
+        cpf_selecionado = input("Digite o CPF do usuário desejado: ")
+
+        if cpf_selecionado in usuarios:
+            return usuarios[cpf_selecionado]
+
+        print("\nUsuário não encontrado.")
+    else:
+        print("Não existem usuários cadastrados.")
+
+    return None
+
+# Função Principal
+
+def main():
+    while True:
+        print("\n### BANCO ###")
+        print(menu_usuario)
+        opcao_usuario = input("Digite a opção desejada: ")
+
+        if opcao_usuario == "1":
+            usuario = criar_usuario()
+        elif opcao_usuario == "2":
+            usuario = selecionar_usuario()
+        elif opcao_usuario == "3":
+            break
+        else:
+            print("\nOpção inválida.")
+            continue
+
+        if usuario is None:
+            continue
+
+        while True:
+            print(f"\n### USUÁRIO: {usuario['Nome']} ###")
+            print(menu_conta)
+            opcao_conta = input("Digite a opção desejada: ")
+
+            if opcao_conta == "1":
+                criar_conta(usuario)
+            elif opcao_conta == "2":
+                conta = selecionar_conta(usuario)
+
+                if conta is not None:
+                    while True:
+                        print(f"\n### CONTA: {agencia}{conta['Conta']} ###")
+                        print(menu_conta_acoes)
+                        opcao_conta_acoes = input("Digite a opção desejada: ")
+
+                        if opcao_conta_acoes == "1":
+                            depositar(conta)
+                        elif opcao_conta_acoes == "2":
+                            sacar(conta)
+                        elif opcao_conta_acoes == "3":
+                            extrato_bancario(conta)
+                        elif opcao_conta_acoes == "4":
+                            break
+                        else:
+                            print("\nOpção inválida.")
+                            continue
+                else:
+                    break
+            elif opcao_conta == "3":
+                break
+            else:
+                print("\nOpção inválida.")
+                continue
+
+        print("\n### FIM DA SESSÃO ###")
+
+if __name__ == "__main__":
+    main()
